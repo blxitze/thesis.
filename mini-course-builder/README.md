@@ -31,7 +31,7 @@ docker-compose down
 docker-compose logs -f
 
 ```
-git clone https://github.com/blxitze/TheThesis..git
+git clone https://github.com/blxitze/thesis..git
 cd mini-course-builder
 
 echo "OPENAI_API_KEY=their-key-here" > .env

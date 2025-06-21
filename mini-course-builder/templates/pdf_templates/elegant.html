@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #faf8f5 0%, #f5f2ee 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Source Sans Pro', sans-serif; 
+            line-height: 1.7; 
+            color: #2c2a26; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .luxury-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(218, 165, 32, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 75% 75%, rgba(184, 134, 11, 0.03) 0%, transparent 45%);
+            z-index: -1;
+        }
+        
+        .page-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .elegant-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 2px;
+            box-shadow: 
+                0 0 0 1px rgba(218, 165, 32, 0.1),
+                0 30px 60px rgba(44, 42, 38, 0.08),
+                0 12px 24px rgba(44, 42, 38, 0.04);
+            position: relative;
+        }
+        
+        .elegant-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 3rem;
+            right: 3rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #daa520, transparent);
+        }
+        
+        .elegant-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 3rem;
+            right: 3rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #daa520, transparent);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 1px;
+            background: #daa520;
+        }
+        
+        .title { 
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem; 
+            font-weight: 700; 
+            margin-bottom: 1rem; 
+            color: #2c2a26;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            position: relative;
+        }
+        
+        .title::before {
+            content: '"';
+            font-size: 4rem;
+            color: #daa520;
+            position: absolute;
+            left: -2rem;
+            top: -0.5rem;
+            opacity: 0.3;
+        }
+        
+        .title::after {
+            content: '"';
+            font-size: 4rem;
+            color: #daa520;
+            position: absolute;
+            right: -2rem;
+            bottom: -1rem;
+            opacity: 0.3;
+        }
+        
+        .subtitle { 
+            font-size: 0.875rem; 
+            color: #8b7355; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin: 0;
+        }
+        
+        .overview-section {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c2a26;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .section-title::before,
+        .section-title::after {
+            content: '❦';
+            color: #daa520;
+            font-size: 1rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .section-title::before {
+            left: -3rem;
+        }
+        
+        .section-title::after {
+            right: -3rem;
+        }
+        
+        .overview-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #4a453f;
+            text-align: justify;
+            font-weight: 400;
+            font-style: italic;
+            position: relative;
+            padding: 0 2rem;
+        }
+        
+        .overview-text::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #daa520, rgba(218, 165, 32, 0.2));
+        }
+        
+        .modules-section {
+            position: relative;
+        }
+        
+        .module {
+            margin-bottom: 3rem;
+            position: relative;
+            page-break-inside: avoid;
+            padding: 2rem 0;
+        }
+        
+        .module:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.3), transparent);
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .module-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #daa520;
+            line-height: 1;
+            min-width: 80px;
+            position: relative;
+        }
+        
+        .module-number::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #daa520;
+            width: 50px;
+        }
+        
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #2c2a26;
+            margin: 0;
+            flex: 1;
+            letter-spacing: -0.01em;
+        }
+        
+        .duration {
+            font-size: 0.75rem;
+            color: #8b7355;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: 1px solid #daa520;
+            border-radius: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: rgba(218, 165, 32, 0.05);
+        }
+        
+        .module-content {
+            padding-left: 6rem;
+        }
+        
+        .module-description {
+            font-size: 1rem;
+            color: #5a5449;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-weight: 400;
+            font-style: italic;
+        }
+        
+        .objectives-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2c2a26;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .objectives-list li {
+            position: relative;
+            padding-left: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4a453f;
+            font-weight: 400;
+        }
+        
+        .objectives-list li::before {
+            content: '◊';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #daa520;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .total-duration {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(218, 165, 32, 0.05);
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            position: relative;
+        }
+        
+        .total-duration::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 2rem;
+            right: 2rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #daa520, transparent);
+        }
+        
+        .total-duration::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 2rem;
+            right: 2rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #daa520, transparent);
+        }
+        
+        .total-duration-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #8b7355;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-duration-value {
+            font-family: 'Playfair Display', serif;
+            color: #2c2a26;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+        
+        .decorative-border {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            right: 2rem;
+            bottom: 2rem;
+            border: 1px solid rgba(218, 165, 32, 0.2);
+            pointer-events: none;
+        }
+        
+        .decorative-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: #daa520;
+        }
+        
+        .decorative-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: #daa520;
+        }
+    </style>
+</head>
+<body>
+    <div class="luxury-bg"></div>
+    <div class="page-container">
+        <div class="elegant-container">
+            <div class="decorative-border"></div>
+            
+            <header class="header">
+                <h1 class="title">{{ outline.title }}</h1>
+                <p class="subtitle">Premium Course Collection</p>
+            </header>
+            
+            <section class="overview-section">
+                <h2 class="section-title">Course Overview</h2>
+                <p class="overview-text">{{ outline.overview }}</p>
+            </section>
+            
+            <section class="modules-section">
+                <h2 class="section-title">Curriculum</h2>
+                
+                {% for module in outline.modules %}
+                <article class="module">
+                    <div class="module-header">
+                        <div class="module-number">{{ forloop.counter|stringformat:"02d" }}</div>
+                        <h3 class="module-title">{{ module.title }}</h3>
+                        <span class="duration">{{ module.duration|default:"TBD" }}</span>
+                    </div>
+                    
+                    <div class="module-content">
+                        {% if module.description %}
+                        <p class="module-description">{{ module.description }}</p>
+                        {% endif %}
+                        
+                        {% if module.objectives %}
+                        <div class="objectives-label">Key Learning Outcomes</div>
+                        <ul class="objectives-list">
+                            {% for objective in module.objectives %}
+                            <li>{{ objective }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+            
+            {% if outline.total_duration %}
+            <footer class="total-duration">
+                <div class="total-duration-label">Total Investment</div>
+                <div class="total-duration-value">{{ outline.total_duration }}</div>
+            </footer>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

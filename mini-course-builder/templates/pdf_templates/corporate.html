@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Slab:wght@400;600;700&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif; 
+            line-height: 1.6; 
+            color: #1a202c; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .corporate-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.02) 32%, transparent 34%),
+                linear-gradient(-45deg, transparent 30%, rgba(16, 185, 129, 0.02) 32%, transparent 34%);
+            background-size: 60px 60px;
+            z-index: -1;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .corporate-container {
+            background: white;
+            border-radius: 8px;
+            padding: 3rem;
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+            flex: 1;
+        }
+        
+        .corporate-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #3b82f6, #10b981, #6366f1);
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .header-left {
+            flex: 1;
+        }
+        
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .title { 
+            font-family: 'Roboto Slab', serif;
+            font-size: 2.25rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+            color: #1a202c;
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+        
+        .subtitle { 
+            font-size: 1rem; 
+            color: #6b7280; 
+            font-weight: 500;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .header-right {
+            text-align: right;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .doc-type {
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .doc-meta {
+            margin-bottom: 0.25rem;
+        }
+        
+        .executive-summary {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            border-left: 4px solid #3b82f6;
+            position: relative;
+        }
+        
+        .summary-badge {
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: white;
+            padding: 0 1rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .summary-title {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+        
+        .summary-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #374151;
+            margin: 0;
+            text-align: justify;
+        }
+        
+        .curriculum-section {
+            position: relative;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .section-title {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .module-count {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .modules-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .module {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            position: relative;
+            page-break-inside: avoid;
+            overflow: hidden;
+        }
+        
+        .module-header {
+            background: white;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .module-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+        
+        .module-title {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .duration-chip {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 0.375rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid #d1d5db;
+        }
+        
+        .module-content {
+            padding: 1.5rem;
+        }
+        
+        .module-description {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            text-align: justify;
+        }
+        
+        .deliverables-section {
+            background: white;
+            border-radius: 6px;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .deliverables-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .deliverables-title::before {
+            content: '📋';
+            font-size: 1rem;
+        }
+        
+        .deliverables-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .deliverables-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #4b5563;
+            font-weight: 400;
+        }
+        
+        .deliverables-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #10b981;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        
+        .business-metrics {
+            margin-top: 3rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .metrics-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .metrics-icon {
+            width: 40px;
+            height: 40px;
+            background: #10b981;
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .metrics-title {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .metric-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .metric-value {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            width: 32px;
+            height: 32px;
+            background: #f3f4f6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        
+        .confidentiality {
+            color: #ef4444;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="corporate-bg"></div>
+    <div class="page-container">
+        <div class="corporate-container">
+            <header class="header">
+                <div class="header-left">
+                    <div class="company-logo">🏢</div>
+                    <h1 class="title">{{ outline.title }}</h1>
+                    <p class="subtitle">Professional Development Program</p>
+                </div>
+                <div class="header-right">
+                    <div class="doc-type">Training Curriculum</div>
+                    <div class="doc-meta">Document Type: Course Outline</div>
+                    <div class="doc-meta">Version: 1.0</div>
+                    <div class="doc-meta">Status: Approved</div>
+                </div>
+            </header>
+            
+            <section class="executive-summary">
+                <div class="summary-badge">Executive Summary</div>
+                <h2 class="summary-title">Program Overview</h2>
+                <p class="summary-text">{{ outline.overview }}</p>
+            </section>
+            
+            <section class="curriculum-section">
+                <div class="section-header">
+                    <h2 class="section-title">Training Modules</h2>
+                    <div class="module-count">{{ outline.modules|length }} Modules</div>
+                </div>
+                
+                <div class="modules-grid">
+                    {% for module in outline.modules %}
+                    <article class="module">
+                        <div class="module-header">
+                            <div class="module-number">{{ forloop.counter|stringformat:"02d" }}</div>
+                            <h3 class="module-title">{{ module.title }}</h3>
+                            <span class="duration-chip">{{ module.duration|default:"TBD" }}</span>
+                        </div>
+                        
+                        <div class="module-content">
+                            {% if module.description %}
+                            <p class="module-description">{{ module.description }}</p>
+                            {% endif %}
+                            
+                            {% if module.objectives %}
+                            <div class="deliverables-section">
+                                <div class="deliverables-title">Key Deliverables</div>
+                                <ul class="deliverables-list">
+                                    {% for objective in module.objectives %}
+                                    <li>{{ objective }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% elif module.key_points %}
+                            <div class="deliverables-section">
+                                <div class="deliverables-title">Key Deliverables</div>
+                                <ul class="deliverables-list">
+                                    {% for point in module.key_points %}
+                                    <li>{{ point }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% empty %}
+                    <p style="text-align: center; color: #6b7280; padding: 2rem;">No modules found in course outline.</p>
+                    {% endfor %}
+                </div>
+            </section>
+            
+            {% if outline.total_duration %}
+            <section class="business-metrics">
+                <div class="metrics-header">
+                    <div class="metrics-icon">📊</div>
+                    <h2 class="metrics-title">Program Metrics</h2>
+                </div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-value">{{ outline.total_duration }}</div>
+                        <div class="metric-label">Total Duration</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">{{ outline.modules|length }}</div>
+                        <div class="metric-label">Training Modules</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value">100%</div>
+                        <div class="metric-label">Completion Rate</div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+            
+            <footer class="footer">
+                <div class="footer-left">
+                    <div class="footer-logo">CF</div>
+                    <span>Professional Training Solutions</span>
+                </div>
+                <div class="confidentiality">Confidential</div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html> 

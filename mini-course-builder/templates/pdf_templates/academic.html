@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: #fafafa;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Source Sans Pro', sans-serif; 
+            line-height: 1.7; 
+            color: #2c3e50; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .academic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .page-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .academic-container {
+            background: white;
+            padding: 2rem;
+            box-shadow: 
+                0 0 0 1px rgba(0, 0, 0, 0.05),
+                0 10px 25px rgba(0, 0, 0, 0.08),
+                0 4px 10px rgba(0, 0, 0, 0.04);
+            position: relative;
+            border-radius: 2px;
+        }
+        
+        .academic-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #ecf0f1;
+            position: relative;
+        }
+        
+        .university-badge {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 8px 16px rgba(44, 62, 80, 0.2);
+        }
+        
+        .title { 
+            font-family: 'Crimson Text', serif;
+            font-size: 2.75rem; 
+            font-weight: 600; 
+            margin-bottom: 1rem; 
+            color: #2c3e50;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+        }
+        
+        .subtitle { 
+            font-size: 1rem; 
+            color: #7f8c8d; 
+            font-weight: 400;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .course-meta {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            font-size: 0.875rem;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .meta-item::before {
+            content: '•';
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .abstract-section {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #3498db;
+        }
+        
+        .abstract-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #34495e;
+            text-align: justify;
+            font-weight: 400;
+            text-indent: 2rem;
+            margin: 0;
+        }
+        
+        .curriculum-section {
+            position: relative;
+        }
+        
+        .curriculum-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .curriculum-count {
+            font-size: 0.875rem;
+            color: #95a5a6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .module {
+            margin-bottom: 3rem;
+            position: relative;
+            page-break-inside: avoid;
+            background: #fdfdfd;
+            border: 1px solid #ecf0f1;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .module-header {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+        }
+        
+        .module-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            background: #3498db;
+        }
+        
+        .module-meta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .module-number {
+            font-family: 'Crimson Text', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 4rem;
+        }
+        
+        .module-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+            flex: 1;
+            letter-spacing: -0.01em;
+        }
+        
+        .duration-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .duration-info::before {
+            content: '⏱';
+            font-size: 1rem;
+        }
+        
+        .module-content {
+            padding: 2rem;
+        }
+        
+        .module-description {
+            color: #5a6c7d;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            text-align: justify;
+            font-style: italic;
+            text-indent: 1.5rem;
+        }
+        
+        .learning-outcomes {
+            position: relative;
+        }
+        
+        .outcomes-title {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .outcomes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .outcomes-list li {
+            position: relative;
+            padding-left: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #34495e;
+            font-weight: 400;
+        }
+        
+        .outcomes-list li::before {
+            content: counter(outcome-counter, lower-roman);
+            counter-increment: outcome-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: 600;
+            color: #3498db;
+            font-style: italic;
+        }
+        
+        .outcomes-list {
+            counter-reset: outcome-counter;
+        }
+        
+        .bibliography-section {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .total-duration {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border: 1px solid #ecf0f1;
+            position: relative;
+        }
+        
+        .total-duration::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 2rem;
+            right: 2rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+        }
+        
+        .total-duration::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 2rem;
+            right: 2rem;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #3498db, transparent);
+        }
+        
+        .duration-label {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .duration-value {
+            font-family: 'Crimson Text', serif;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+        
+        .page-footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #95a5a6;
+            padding-top: 1rem;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .reference-number {
+            float: right;
+            font-size: 0.75rem;
+            color: #bdc3c7;
+            font-weight: 600;
+        }
+        
+        .academic-seal {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ecf0f1;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: #95a5a6;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="academic-bg"></div>
+    <div class="page-container">
+        <div class="academic-container">
+            <div class="academic-seal">AC</div>
+            
+            <header class="header">
+                <div class="university-badge">📚</div>
+                <h1 class="title">{{ outline.title }}</h1>
+                <p class="subtitle">Academic Course Syllabus</p>
+                
+                <div class="course-meta">
+                    <div class="meta-item">Course Outline</div>
+                    <div class="meta-item">Academic Standard</div>
+                    <div class="meta-item">Professional Development</div>
+                </div>
+            </header>
+            
+            <section class="abstract-section">
+                <h2 class="section-title">Abstract</h2>
+                <p class="abstract-text">{{ outline.overview }}</p>
+            </section>
+            
+            <section class="curriculum-section">
+                <div class="curriculum-header">
+                    <h2 class="section-title">Curriculum Structure</h2>
+                    <div class="curriculum-count">{{ outline.modules|length }} Modules</div>
+                </div>
+                
+                {% for module in outline.modules %}
+                <article class="module">
+                    <div class="module-header">
+                        <div class="module-meta">
+                            <div class="module-number">{{ forloop.counter|stringformat:"02d" }}.</div>
+                            <h3 class="module-title">{{ module.title }}</h3>
+                            <div class="duration-info">{{ module.duration|default:"TBD" }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="module-content">
+                        {% if module.description %}
+                        <p class="module-description">{{ module.description }}</p>
+                        {% endif %}
+                        
+                        {% if module.objectives %}
+                        <div class="learning-outcomes">
+                            <div class="outcomes-title">Learning Outcomes</div>
+                            <ul class="outcomes-list">
+                                {% for objective in module.objectives %}
+                                <li>{{ objective }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </article>
+                {% endfor %}
+            </section>
+            
+            {% if outline.total_duration %}
+            <section class="bibliography-section">
+                <footer class="total-duration">
+                    <div class="duration-label">Total Course Duration</div>
+                    <div class="duration-value">{{ outline.total_duration }}</div>
+                </footer>
+            </section>
+            {% endif %}
+            
+            <div class="page-footer">
+                <div class="reference-number">REF: AC-{{ outline.title|slugify|upper }}</div>
+                Academic Course Outline • Professional Development Standards
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

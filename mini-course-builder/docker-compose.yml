@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: courseforge-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/venv
+    env_file:
+      - .env
+    environment:
+      - DEBUG=1
+      - DJANGO_SETTINGS_MODULE=backend.settings
+    networks:
+      - courseforge-network
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: courseforge-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - courseforge-network
+
+networks:
+  courseforge-network:
+    driver: bridge
+
+volumes:
+  node_modules:
+  venv: 

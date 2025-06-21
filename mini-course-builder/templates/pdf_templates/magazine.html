@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 25%, #ffd23f 50%, #37b24d 75%, #1c7ed6 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif; 
+            line-height: 1.6; 
+            color: #212529; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .magazine-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .magazine-container {
+            background: white;
+            border-radius: 0;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.25),
+                0 16px 32px rgba(0, 0, 0, 0.15);
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .magazine-header {
+            background: linear-gradient(135deg, #212529 0%, #495057 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .magazine-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: magazine-shine 4s ease-in-out infinite;
+        }
+        
+        @keyframes magazine-shine {
+            0%, 100% { background-position: -200% -200%; }
+            50% { background-position: 200% 200%; }
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .magazine-logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            background: linear-gradient(90deg, #ff6b35, #ffd23f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .issue-info {
+            text-align: right;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .header-main {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title { 
+            font-family: 'Oswald', sans-serif;
+            font-size: 3rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 0.9;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle { 
+            font-size: 1.125rem; 
+            color: rgba(255, 255, 255, 0.8); 
+            font-weight: 400;
+            margin: 0;
+            font-style: italic;
+        }
+        
+        .content-area {
+            padding: 3rem 2rem;
+            background: white;
+        }
+        
+        .feature-ribbon {
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1rem 2rem;
+            margin: -3rem -2rem 3rem -2rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+        }
+        
+        .feature-ribbon::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.1) 50%);
+        }
+        
+        .article-intro {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            color: #495057;
+            margin-bottom: 3rem;
+            font-weight: 400;
+            text-align: justify;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .article-intro::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -0.5rem;
+            font-size: 4rem;
+            color: #ff6b35;
+            font-family: 'Oswald', sans-serif;
+            line-height: 1;
+        }
+        
+        .sections-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .main-content {
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+        }
+        
+        .module {
+            margin-bottom: 3rem;
+            position: relative;
+            page-break-inside: avoid;
+            background: #f8f9fa;
+            border-left: 6px solid #ff6b35;
+            padding: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .module:nth-child(even) {
+            border-left-color: #ffd23f;
+            background: linear-gradient(135deg, #fff9db 0%, #fff3cd 100%);
+        }
+        
+        .module:nth-child(3n) {
+            border-left-color: #37b24d;
+            background: linear-gradient(135deg, #d1f2dd 0%, #c3f7d0 100%);
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .module-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #212529, #495057);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(33, 37, 41, 0.3);
+            position: relative;
+        }
+        
+        .module-number::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+        }
+        
+        .module-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #212529;
+            margin: 0;
+            flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+        }
+        
+        .module-content {
+            margin-left: 6rem;
+        }
+        
+        .module-description {
+            color: #6c757d;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            font-weight: 400;
+            text-align: justify;
+        }
+        
+        .highlights-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .highlights-list li {
+            position: relative;
+            padding-left: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .highlights-list li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #ff6b35;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+        
+        .sidebar {
+            position: relative;
+        }
+        
+        .sidebar-section {
+            background: linear-gradient(135deg, #212529 0%, #495057 100%);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b35, #ffd23f, #37b24d);
+        }
+        
+        .sidebar-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffd23f;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .duration-highlight {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .duration-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .duration-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .magazine-footer {
+            background: #212529;
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+        
+        .footer-branding {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .footer-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ff6b35, #ffd23f);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .copyright {
+            opacity: 0.7;
+        }
+        
+        .decorative-elements {
+            position: absolute;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .decorative-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        
+        .decorative-dot:nth-child(1) { background: #ff6b35; }
+        .decorative-dot:nth-child(2) { background: #f7931e; }
+        .decorative-dot:nth-child(3) { background: #ffd23f; }
+        .decorative-dot:nth-child(4) { background: #37b24d; }
+        .decorative-dot:nth-child(5) { background: #1c7ed6; }
+    </style>
+</head>
+<body>
+    <div class="magazine-bg"></div>
+    <div class="page-container">
+        <div class="magazine-container">
+            <header class="magazine-header">
+                <div class="header-top">
+                    <div class="magazine-logo">CourseForge Magazine</div>
+                    <div class="issue-info">
+                        Learning Edition<br>
+                        Volume 1, Issue 1
+                    </div>
+                </div>
+                <div class="header-main">
+                    <h1 class="title">{{ outline.title }}</h1>
+                    <p class="subtitle">Your Complete Learning Journey</p>
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <div class="feature-ribbon">Featured Course Outline</div>
+                
+                <p class="article-intro">{{ outline.overview }}</p>
+                
+                <div class="sections-grid">
+                    <div class="main-content">
+                        <h2 class="section-title">Course Modules</h2>
+                        
+                        {% for module in outline.modules %}
+                        <article class="module">
+                            <div class="module-header">
+                                <div class="module-number">{{ forloop.counter }}</div>
+                                <h3 class="module-title">{{ module.title }}</h3>
+                            </div>
+                            
+                            <div class="module-content">
+                                {% if module.description %}
+                                <p class="module-description">{{ module.description }}</p>
+                                {% endif %}
+                                
+                                {% if module.objectives %}
+                                <div class="highlights-title">Course Highlights</div>
+                                <ul class="highlights-list">
+                                    {% for objective in module.objectives %}
+                                    <li>{{ objective }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="sidebar">
+                        <div class="decorative-elements">
+                            <div class="decorative-dot"></div>
+                            <div class="decorative-dot"></div>
+                            <div class="decorative-dot"></div>
+                            <div class="decorative-dot"></div>
+                            <div class="decorative-dot"></div>
+                        </div>
+                        
+                        <div class="sidebar-section">
+                            <h3 class="sidebar-title">Course Stats</h3>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ outline.modules|length }}</div>
+                                    <div class="stat-label">Modules</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">100%</div>
+                                    <div class="stat-label">Practical</div>
+                                </div>
+                            </div>
+                            <p style="font-size: 0.875rem; margin: 0; opacity: 0.9;">
+                                Designed for maximum learning impact with hands-on experience.
+                            </p>
+                        </div>
+                        
+                        {% if outline.total_duration %}
+                        <div class="duration-highlight">
+                            <div class="duration-label">Total Duration</div>
+                            <div class="duration-value">{{ outline.total_duration }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="magazine-footer">
+                <div class="footer-branding">
+                    <div class="footer-logo">M</div>
+                    <span>Professional Learning Magazine</span>
+                </div>
+                <div class="copyright">© 2024 • Educational Excellence</div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html> 

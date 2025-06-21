@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Caveat:wght@400;500;600;700&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif; 
+            line-height: 1.6; 
+            color: #2d3748; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .creative-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .page-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .creative-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.15),
+                0 16px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .creative-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #667eea);
+            border-radius: 50%;
+            opacity: 0.05;
+            animation: creative-rotate 20s linear infinite;
+        }
+        
+        @keyframes creative-rotate {
+            0% { transform: rotate(0deg) scale(0.8); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(0.8); }
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .decorative-elements {
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 0;
+        }
+        
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        
+        .circle:nth-child(1) { background: #667eea; }
+        .circle:nth-child(2) { background: #f093fb; }
+        .circle:nth-child(3) { background: #f5576c; }
+        .circle:nth-child(4) { background: #4facfe; }
+        .circle:nth-child(5) { background: #764ba2; }
+        
+        .title { 
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem; 
+            font-weight: 700; 
+            margin-bottom: 0.5rem; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitle { 
+            font-size: 1rem; 
+            color: #718096; 
+            font-weight: 500;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .fun-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #f5576c, #f093fb, #4facfe);
+            border-radius: 2px;
+            margin: 2rem auto;
+            position: relative;
+        }
+        
+        .fun-divider::before {
+            content: '✨';
+            position: absolute;
+            left: -30px;
+            top: -8px;
+            font-size: 1.2rem;
+        }
+        
+        .fun-divider::after {
+            content: '✨';
+            position: absolute;
+            right: -30px;
+            top: -8px;
+            font-size: 1.2rem;
+        }
+        
+        .overview-section {
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #667eea, #f5576c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #f5576c);
+            border-radius: 2px;
+            opacity: 0.3;
+        }
+        
+        .overview-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            box-shadow: 0 16px 32px rgba(102, 126, 234, 0.1);
+        }
+        
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #667eea, #f5576c, #4facfe);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.8;
+        }
+        
+        .overview-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #4a5568;
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        .modules-section {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .modules-grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .module {
+            position: relative;
+            page-break-inside: avoid;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+        }
+        
+        .module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .module:nth-child(odd)::before {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .module:nth-child(even)::before {
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+        }
+        
+        .module:nth-child(3n)::before {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .module-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .module:nth-child(odd) .module-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .module:nth-child(even) .module-number {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .module:nth-child(3n) .module-number {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .module-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .duration-badge {
+            background: linear-gradient(135deg, #667eea, #4facfe);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .module-content {
+            margin-top: 1.5rem;
+        }
+        
+        .module-description {
+            color: #718096;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            font-style: italic;
+        }
+        
+        .objectives-title {
+            font-family: 'Caveat', cursive;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+        
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .objectives-list li {
+            position: relative;
+            padding-left: 2rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #4a5568;
+            font-weight: 400;
+        }
+        
+        .objectives-list li::before {
+            content: '🎯';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1rem;
+        }
+        
+        .total-duration {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .total-duration::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe);
+            border-radius: 22px;
+            z-index: -1;
+            animation: duration-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes duration-glow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        .total-duration-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-duration-label {
+            font-family: 'Caveat', cursive;
+            font-size: 1.25rem;
+            color: #718096;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-duration-value {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, #667eea, #f5576c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .shape-1 {
+            top: 10%;
+            right: 10%;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            top: 60%;
+            left: 5%;
+            width: 30px;
+            height: 30px;
+            background: #f5576c;
+            transform: rotate(45deg);
+            animation-delay: 2s;
+        }
+        
+        .shape-3 {
+            bottom: 15%;
+            right: 15%;
+            width: 50px;
+            height: 25px;
+            background: #4facfe;
+            border-radius: 25px;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="creative-bg"></div>
+    <div class="page-container">
+        <div class="creative-container">
+            <div class="floating-shapes">
+                <div class="floating-shape shape-1"></div>
+                <div class="floating-shape shape-2"></div>
+                <div class="floating-shape shape-3"></div>
+            </div>
+            
+            <header class="header">
+                <div class="decorative-elements">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+                <h1 class="title">{{ outline.title }}</h1>
+                <p class="subtitle">Creative Learning Experience</p>
+                <div class="fun-divider"></div>
+            </header>
+            
+            <section class="overview-section">
+                <h2 class="section-title">What You'll Create</h2>
+                <div class="overview-card">
+                    <p class="overview-text">{{ outline.overview }}</p>
+                </div>
+            </section>
+            
+            <section class="modules-section">
+                <h2 class="section-title">Your Creative Journey</h2>
+                
+                <div class="modules-grid">
+                    {% for module in outline.modules %}
+                    <article class="module">
+                        <div class="module-header">
+                            <div class="module-number">{{ forloop.counter }}</div>
+                            <h3 class="module-title">{{ module.title }}</h3>
+                            <span class="duration-badge">{{ module.duration|default:"TBD" }}</span>
+                        </div>
+                        
+                        <div class="module-content">
+                            {% if module.description %}
+                            <p class="module-description">{{ module.description }}</p>
+                            {% endif %}
+                            
+                            {% if module.objectives %}
+                            <div class="objectives-title">What You'll Master</div>
+                            <ul class="objectives-list">
+                                {% for objective in module.objectives %}
+                                <li>{{ objective }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+            
+            {% if outline.total_duration %}
+            <footer class="total-duration">
+                <div class="total-duration-icon">⏰</div>
+                <div class="total-duration-label">Total Time Investment</div>
+                <div class="total-duration-value">{{ outline.total_duration }}</div>
+            </footer>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

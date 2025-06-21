@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+            line-height: 1.7; 
+            color: #0f172a; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .page-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .zen-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 
+                0 0 0 1px rgba(15, 23, 42, 0.05),
+                0 20px 25px -5px rgba(15, 23, 42, 0.1),
+                0 10px 10px -5px rgba(15, 23, 42, 0.04);
+        }
+        
+        .header {
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        
+        .title { 
+            font-size: 2.5rem; 
+            font-weight: 200; 
+            margin-bottom: 0.5rem; 
+            color: #0f172a;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+        
+        .subtitle { 
+            font-size: 0.875rem; 
+            color: #64748b; 
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin: 0;
+        }
+        
+        .overview { 
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .overview-label {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .overview-label::before {
+            content: '';
+            width: 2px;
+            height: 16px;
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+            margin-right: 0.75rem;
+            border-radius: 1px;
+        }
+        
+        .overview-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #334155;
+            margin: 0;
+            text-align: justify;
+            font-weight: 400;
+        }
+        
+        .modules-section {
+            position: relative;
+            page-break-before: avoid;
+        }
+        
+        .modules-label {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .modules-label::before {
+            content: '';
+            width: 2px;
+            height: 16px;
+            background: linear-gradient(to bottom, #8b5cf6, #ec4899);
+            margin-right: 0.75rem;
+            border-radius: 1px;
+        }
+        
+        .module { 
+            margin-bottom: 2.5rem;
+            position: relative;
+            page-break-inside: avoid;
+            break-inside: avoid;
+            overflow: visible;
+        }
+        
+        /* Alternative approach for modules that are too large */
+        .module-large {
+            margin-bottom: 2.5rem;
+            position: relative;
+            page-break-inside: auto;
+            break-inside: auto;
+            overflow: visible;
+        }
+        
+        .module:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .module-number {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
+            min-width: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .module-title { 
+            font-size: 1.25rem; 
+            font-weight: 400; 
+            color: #0f172a;
+            margin: 0;
+            flex: 1;
+            letter-spacing: -0.01em;
+        }
+        
+        .duration {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .module-content {
+            padding-left: 4rem;
+            orphans: 2;
+            widows: 2;
+        }
+        
+        .module-description {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        .objectives-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .objectives-list li { 
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #334155;
+            position: relative;
+            padding-left: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .objectives-list li::before { 
+            content: ""; 
+            position: absolute; 
+            left: 0;
+            top: 0.65rem;
+            width: 4px;
+            height: 4px;
+            background: #94a3b8;
+            border-radius: 50%;
+        }
+        
+        .total-duration {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            text-align: center;
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .total-duration-value {
+            color: #0f172a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="zen-background"></div>
+    <div class="page-container">
+        <div class="main-container">
+            <header class="header">
+                <h1 class="title">{{ outline.title }}</h1>
+                <p class="subtitle">Course Outline</p>
+            </header>
+            
+            <section class="overview">
+                <div class="overview-label">Overview</div>
+                <p class="overview-text">{{ outline.overview }}</p>
+            </section>
+            
+            <section class="modules-section">
+                <div class="modules-label">Course Modules ({{ outline.modules|length }} total)</div>
+                {% for module in outline.modules %}
+                <article class="module">
+                    <div class="module-header">
+                        <span class="module-number">{{ forloop.counter|stringformat:"02d" }}</span>
+                        <h2 class="module-title">{{ module.title }}</h2>
+                        <span class="duration">{{ module.duration|default:"TBD" }}</span>
+                    </div>
+                    <div class="module-content">
+                        {% if module.description %}
+                        <p class="module-description">{{ module.description }}</p>
+                        {% endif %}
+                        {% if module.objectives %}
+                        <ul class="objectives-list">
+                            {% for objective in module.objectives %}
+                            <li>{{ objective }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% elif module.key_points %}
+                        <ul class="objectives-list">
+                            {% for point in module.key_points %}
+                            <li>{{ point }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </article>
+                {% empty %}
+                <p>No modules found in course outline.</p>
+                {% endfor %}
+            </section>
+            
+            {% if outline.total_duration %}
+            <footer class="total-duration">
+                Total Duration: <span class="total-duration-value">{{ outline.total_duration }}</span>
+            </footer>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

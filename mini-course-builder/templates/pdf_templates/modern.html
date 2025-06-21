@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ outline.title }}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        @page { 
+            size: A4; 
+            margin: 2cm; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; 
+            line-height: 1.6; 
+            color: #1a1a2e; 
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.4) 0%, transparent 50%);
+            z-index: -1;
+        }
+        
+        .page-container {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .glass-container { 
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem; 
+            border-radius: 24px; 
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 24px 24px 0 0;
+        }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 3rem; 
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white; 
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(30deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(30deg); }
+        }
+        
+        .title { 
+            font-size: 2.75rem; 
+            font-weight: 700; 
+            margin-bottom: 1rem; 
+            color: white;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle { 
+            font-size: 1rem; 
+            opacity: 0.9;
+            font-weight: 400;
+            font-family: 'Space Grotesk', monospace;
+            z-index: 1;
+            position: relative;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .overview { 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem; 
+            border-radius: 16px; 
+            margin-bottom: 2.5rem; 
+            box-shadow: 
+                0 16px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .overview h3 {
+            margin-top: 0; 
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .overview h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to bottom, #f5576c, #f093fb);
+            border-radius: 2px;
+            transform: translateY(-50%);
+        }
+        
+        .overview p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+            font-weight: 400;
+        }
+        
+        .modules-section {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .module { 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 2rem; 
+            border-radius: 16px; 
+            box-shadow: 
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            page-break-inside: avoid;
+            transition: all 0.3s ease;
+        }
+        
+        .module::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #f5576c);
+            border-radius: 0 16px 16px 0;
+        }
+        
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .module-number { 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white; 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 16px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.25rem;
+            font-weight: 700;
+            box-shadow: 
+                0 12px 24px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            flex: 1;
+            letter-spacing: -0.01em;
+        }
+        
+        .duration {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+        }
+        
+        .module-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .objectives-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .objectives-list li {
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+        
+        .objectives-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 6px;
+            height: 6px;
+            background: linear-gradient(135deg, #f5576c, #f093fb);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(245, 87, 108, 0.5);
+        }
+        
+        .total-duration {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 
+                0 16px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .total-duration-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total-duration-value {
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .glow-effect {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0.6;
+            filter: blur(8px);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="page-container">
+        <div class="glass-container">
+            <div class="glow-effect"></div>
+            
+            <header class="header">
+                <h1 class="title">{{ outline.title }}</h1>
+                <p class="subtitle">Modern Course Design</p>
+            </header>
+            
+            <section class="overview">
+                <h3>Course Overview</h3>
+                <p>{{ outline.overview }}</p>
+            </section>
+            
+            <section class="modules-section">
+                {% for module in outline.modules %}
+                <article class="module">
+                    <div class="module-header">
+                        <div class="module-number">{{ forloop.counter|stringformat:"02d" }}</div>
+                        <h2 class="module-title">{{ module.title }}</h2>
+                        <span class="duration">{{ module.duration|default:"TBD" }}</span>
+                    </div>
+                    
+                    {% if module.description %}
+                    <p class="module-description">{{ module.description }}</p>
+                    {% endif %}
+                    
+                    {% if module.objectives %}
+                    <ul class="objectives-list">
+                        {% for objective in module.objectives %}
+                        <li>{{ objective }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% elif module.key_points %}
+                    <ul class="objectives-list">
+                        {% for point in module.key_points %}
+                        <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </article>
+                {% empty %}
+                <p style="color: rgba(255, 255, 255, 0.7); text-align: center; padding: 2rem;">No modules found in course outline.</p>
+                {% endfor %}
+            </section>
+            
+            {% if outline.total_duration %}
+            <footer class="total-duration">
+                <div class="total-duration-label">Total Course Duration</div>
+                <div class="total-duration-value">{{ outline.total_duration }}</div>
+            </footer>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,7 +1,5 @@
 # 🧪 Test Examples for CourseForge
 
-Here are some example course topics to test with the improved CourseForge application:
-
 ## Example 1: Technical Course
 **Topic:** "Full-Stack Web Development with React and Node.js"
 **Audience:** Intermediate
